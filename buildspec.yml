@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    on-failure: ABORT
+    commands:
+    finally:
+      - echo 'Build completed'
+  pre_build:
+    on-failure: ABORT
+    commands:
+      - echo 'Start - Pre Build'
+      - export TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo $TAG
+      - export PW=`aws ecr get-login-password --region $AWS_REGION`
+      - echo $PW
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY_URL
+  build:
+    on-failure: ABORT
+    commands:
+      - echo 'Start - Build'
+      - docker build -t $ECR_REGISTRY_URL/$ECR_REPOSITORY_NAME:$TAG --build-arg COMMIT_HASH=$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - docker push $ECR_REGISTRY_URL/$ECR_REPOSITORY_NAME:$TAG
+      - docker tag $ECR_REGISTRY_URL/$ECR_REPOSITORY_NAME:$TAG $ECR_REGISTRY_URL/$ECR_REPOSITORY_NAME:latest
+      - docker push $ECR_REGISTRY_URL/$ECR_REPOSITORY_NAME:latest
+  post_build:
+    on-failure: ABORT
+    commands:
+      - echo 'Start - Post Build'
+      - echo $TAG
