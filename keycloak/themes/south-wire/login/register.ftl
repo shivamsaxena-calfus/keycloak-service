@@ -156,11 +156,11 @@
     <#elseif section = "info">
         <#--  not being used at the moment but leaving here in case we want to add in the future  -->
         <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-            <div id="kc-registration-container">
+            <#--  <div id="kc-registration-container">
                 <div id="kc-registration">
                     <span>${msg("noAccount")} <a tabindex="8" href="${url.registrationUrl}">${msg("doRegister")}</a></span>
                 </div>
-            </div>
+            </div>  -->
         </#if>
     </#if>
 

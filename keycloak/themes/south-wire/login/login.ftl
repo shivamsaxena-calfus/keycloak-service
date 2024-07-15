@@ -2,17 +2,14 @@
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     
     <#if section = "form">
-     
-
-            
-            <div class="flex justify-between">
-                
+        <div class="flex justify-between">
             <#--  Sidebar  -->
-                <div class="sidebar w-6/12 h-screen">
-                </div>
+            <div class="sidebar w-6/12 h-screen">
+            </div>
 
-                <div class="bg-white flex flex-grow items-center justify-center p-8">
-                    <div class="md:w-6/12"><div class="text-4xl">Hi! Welcome to DoCUS</div>
+            <div class="bg-white flex flex-grow items-center justify-center p-8">
+                <div class="md:w-6/12">
+                    <div class="text-4xl">Hi! Welcome to DoCUS</div>
                     <div class="text-base-secondary text-sm leading-tight py-2">Build strong connections with customers to enhance brand loyalty and drive business growth.</div>
                     <div>
                         <form 
@@ -88,29 +85,35 @@
                             <#--  error message  -->
                             <#if messagesPerField.existsError('username','password')>
                                 <span id="input-error" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
-                                        ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
+                                    ${kcSanitize(messagesPerField.getFirstError('username','password'))?no_esc}
                                 </span>
                             </#if>
+
+                            <#--  Registration button  -->
+                            <div class="my-2 w-full">
+                                <div id="kc-form-registration" class="${properties.kcFormGroupClass!}">
+                                    <a 
+                                        tabindex="6" 
+                                        class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" 
+                                        href="${url.registrationUrl}"
+                                    >${msg("doRegister")}</a>
+                                </div>
+                            </div>
                         </form>
-                    </div></div>
+                    </div>
                 </div>
-              
-            
             </div>
+        </div>
 
-
-       
-       
         <script type="module" src="${url.resourcesPath}/js/passwordVisibility.js"></script>
     <#elseif section = "info" >
         <#--  not being used at the moment but leaving here in case we want to add in the future  -->
         <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
-            <div id="kc-registration-container">
+            <#--  <div id="kc-registration-container">
                 <div id="kc-registration">
-                    <span>${msg("noAccount")} <a tabindex="6"
-                                                 href="${url.registrationUrl}">${msg("doRegister")}</a></span>
+                    <span>${msg("noAccount")} <a tabindex="6" href="${url.registrationUrl}">${msg("doRegister")}</a></span>
                 </div>
-            </div>
+            </div>  -->
         </#if>
     </#if>
 </@layout.registrationLayout>
